@@ -105,7 +105,7 @@ def data_extraction(path):
         im_info = (annot[46:], data_dict)
         box_data.append(im_info)
 
-    return pickling(box_data)
+    return box_data
 
 def labels_extraction(path):
     labels_arr = []
@@ -118,8 +118,8 @@ def labels_extraction(path):
         soup = BeautifulSoup(content, 'lxml')
         data = soup.find_all('name')
         labels = {'with_mask': 0, 
-                  'without_mask': 0, 
-                  'mask_weared_incorrect': 0
+                'without_mask': 0, 
+                'mask_weared_incorrect': 0
                 }
         for val in data:
             val = str(val)
@@ -129,23 +129,17 @@ def labels_extraction(path):
                 labels['without_mask'] += 1
             elif 'mask_weared_incorrect' in val:
                 labels['mask_weared_incorrect'] += 1
-        labels_arr.append(labels)
-
-    return pickling(labels_arr)
-
-def pickling(data):
-    with open(f'{data}.pkl', 'wb') as d:
-        pickle.dump(data, d)
-    return
+        labels_arr.append(labels) 
+    
+    return labels_arr
 
 
 if __name__ == '__main__':
     annot_path = os.path.join('F:/Python/Projects/Mask-detection/annot_masks')
     box_data = data_extraction(annot_path)
     labels = labels_extraction(annot_path)
-    print(box_data)
     
-    #with open('box_data.pkl', 'wb') as bd:
-        #pickle.dump(box_data, bd)
-    #with open('labels.pkl', 'wb') as l:
-        #pickle.dump(labels, l)
+    with open('box_data.pkl', 'wb') as bd:
+        pickle.dump(box_data, bd)
+    with open('labels.pkl', 'wb') as l:
+        pickle.dump(labels, l)
