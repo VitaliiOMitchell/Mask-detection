@@ -4,10 +4,9 @@ import pickle
 
 
 def data_extraction(path):
-    output = []
+    box_data = []
     
     for annot in os.listdir(path):
-        
         annot = os.path.join(path, annot)
         with open(annot, 'r') as file:
             content = file.readlines()
@@ -104,9 +103,9 @@ def data_extraction(path):
                     'xmax': xmax,
                     'ymax': ymax}
         im_info = (annot[46:], data_dict)
-        output.append(im_info)
+        box_data.append(im_info)
 
-    return output
+    return pickling(box_data)
 
 def labels_extraction(path):
     labels_arr = []
@@ -132,15 +131,21 @@ def labels_extraction(path):
                 labels['mask_weared_incorrect'] += 1
         labels_arr.append(labels)
 
-    return labels_arr
+    return pickling(labels_arr)
+
+def pickling(data):
+    with open(f'{data}.pkl', 'wb') as d:
+        pickle.dump(data, d)
+    return
 
 
 if __name__ == '__main__':
     annot_path = os.path.join('F:/Python/Projects/Mask-detection/annot_masks')
     box_data = data_extraction(annot_path)
     labels = labels_extraction(annot_path)
+    print(box_data)
     
-    with open('box_data.pkl', 'wb') as bd:
-        pickle.dump(box_data, bd)
-    with open('labels.pkl', 'wb') as l:
-        pickle.dump(labels, l)
+    #with open('box_data.pkl', 'wb') as bd:
+        #pickle.dump(box_data, bd)
+    #with open('labels.pkl', 'wb') as l:
+        #pickle.dump(labels, l)
