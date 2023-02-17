@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import os
 import pickle
+from collections import Counter
 
 def data_extraction(path):
     output = []
@@ -102,17 +103,35 @@ def data_extraction(path):
         im_info = (annot[46:], data_dict)
         output.append(im_info)
 
-    return output
+    return output[54]
 
 def labels_extraction(path):
-    labels = []
-    with open(path, 'r') as data:
-        content = data.readlines()
-    content = ''.join(content)
-    soup = BeautifulSoup(content, 'lxml')
-    data = soup.find_all('name')
-    return data
+    labels_arr = []
+    
+    for annot in os.listdir(path):
+        annot = os.path.join(path, annot)
+        with open(annot, 'r') as data:
+            content = data.readlines()
+        content = ''.join(content)
+        soup = BeautifulSoup(content, 'lxml')
+        data = soup.find_all('name')
+        labels = {'with_mask': 0, 
+                  'without_mask': 0, 
+                  'mask_weared_incorrect': 0
+                }
+        for val in data:
+            val = str(val)
+            if 'with_mask' in val:
+                labels['with_mask'] += 1
+            elif 'without_mask' in val:
+                labels['without_mask'] += 1
+            elif 'mask_weared_incorrect' in val:
+                labels['mask_weared_incorrect'] += 1
+        labels_arr.append(labels)
+
+    return labels_arr
+
 
 if __name__ == '__main__':
-    annot_path = os.path.join('F:/Python/Projects/Mask-detection/annot_masks/maksssksksss5.xml')
-    print(labels_extraction(annot_path))
+    annot_path = os.path.join('F:/Python/Projects/Mask-detection/annot_masks')
+    print(data_extraction((annot_path)))
