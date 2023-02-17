@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 import os
 import pickle
 
-
 def data_extraction(path):
     box_data = []
     
