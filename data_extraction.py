@@ -114,5 +114,5 @@ def labels_extraction(path):
     return data
 
 if __name__ == '__main__':
-    annot_path = os.path.join('F:/Python/Projects/Mask detection/annot_masks/maksssksksss3.xml')
+    annot_path = os.path.join('F:/Python/Projects/Mask-detection/annot_masks/maksssksksss5.xml')
     print(labels_extraction(annot_path))
