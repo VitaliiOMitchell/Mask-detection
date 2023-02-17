@@ -1,8 +1,7 @@
-import requests
 from bs4 import BeautifulSoup
 import os
 import pickle
-from collections import Counter
+
 
 def data_extraction(path):
     output = []
@@ -27,74 +26,78 @@ def data_extraction(path):
         for coordinate_x in xmin_data:
             coordinate_x = str(coordinate_x)
             for i in range(len(coordinate_x)-1):
-                if len(coordinate_x) == 15:
-                    try:
+                try:
+                    if len(coordinate_x) == 14:
+                        elem = coordinate_x[i] 
+                        elem = int(elem)
+                        xmin.append(elem)
+                    elif len(coordinate_x) == 15:
                         elem = coordinate_x[i] + coordinate_x[i+1]
                         elem = int(elem)
                         xmin.append(elem)
-                    except:
-                        pass
-                else:
-                    try:
+                    elif len(coordinate_x) == 16:
                         elem = coordinate_x[i] + coordinate_x[i+1] + coordinate_x[i+2]
                         elem = int(elem)
                         xmin.append(elem)
-                    except:
-                        pass
+                except:
+                    pass
         
         for coordinate_y in ymin_data:
             coordinate_y = str(coordinate_y)
             for i in range(len(coordinate_y)-1):
-                if len(coordinate_y) == 15:
-                    try:
+                try:
+                    if len(coordinate_y) == 14:
+                        elem = coordinate_y[i] 
+                        elem = int(elem)
+                        ymin.append(elem)
+                    elif len(coordinate_y) == 15:
                         elem = coordinate_y[i] + coordinate_y[i+1]
                         elem = int(elem)
                         ymin.append(elem)
-                    except:
-                        pass
-                else:
-                    try:
+                    elif len(coordinate_y) == 16:
                         elem = coordinate_y[i] + coordinate_y[i+1] + coordinate_y[i+2]
                         elem = int(elem)
                         ymin.append(elem)
-                    except:
-                        pass
+                except:
+                    pass
         
         for coordinate_x in xmax_data:
             coordinate_x = str(coordinate_x)
             for i in range(len(coordinate_x)-1):
-                if len(coordinate_x) == 15:
-                    try:
+                try:
+                    if len(coordinate_x) == 14:
+                        elem = coordinate_x[i] 
+                        elem = int(elem)
+                        xmax.append(elem)
+                    elif len(coordinate_x) == 15:
                         elem = coordinate_x[i] + coordinate_x[i+1]
                         elem = int(elem)
                         xmax.append(elem)
-                    except:
-                        pass
-                else:
-                    try:
+                    elif len(coordinate_x) == 16:
                         elem = coordinate_x[i] + coordinate_x[i+1] + coordinate_x[i+2]
                         elem = int(elem)
                         xmax.append(elem)
-                    except:
-                        pass
+                except:
+                    pass
         
         for coordinate_y in ymax_data:
             coordinate_y = str(coordinate_y)
             for i in range(len(coordinate_y)-1):
-                if len(coordinate_y) == 15:
-                    try:
+                try:
+                    if len(coordinate_y) == 14:
+                        elem = coordinate_y[i] 
+                        elem = int(elem)
+                        ymax.append(elem)
+                    elif len(coordinate_y) == 15:
                         elem = coordinate_y[i] + coordinate_y[i+1]
                         elem = int(elem)
                         ymax.append(elem)
-                    except:
-                        pass
-                else:
-                    try:
+                    elif len(coordinate_y) == 16:
                         elem = coordinate_y[i] + coordinate_y[i+1] + coordinate_y[i+2]
                         elem = int(elem)
                         ymax.append(elem)
-                    except:
-                        pass
+                except:
+                    pass
         
         data_dict = {'xmin': xmin,
                     'ymin': ymin,
@@ -103,7 +106,7 @@ def data_extraction(path):
         im_info = (annot[46:], data_dict)
         output.append(im_info)
 
-    return output[54]
+    return output
 
 def labels_extraction(path):
     labels_arr = []
@@ -134,4 +137,10 @@ def labels_extraction(path):
 
 if __name__ == '__main__':
     annot_path = os.path.join('F:/Python/Projects/Mask-detection/annot_masks')
-    print(data_extraction((annot_path)))
+    box_data = data_extraction(annot_path)
+    labels = labels_extraction(annot_path)
+    
+    with open('box_data.pkl', 'wb') as bd:
+        pickle.dump(box_data, bd)
+    with open('labels.pkl', 'wb') as l:
+        pickle.dump(labels, l)
