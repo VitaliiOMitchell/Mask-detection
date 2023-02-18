@@ -2,10 +2,11 @@ from bs4 import BeautifulSoup
 import os
 import pickle
 import numpy as np
+import torch
 
 class Data_extractor:
     def data_extraction(self, data_path):
-        data = []
+        output = []
         path = data_path
         for annot in os.listdir(path):
             file = os.path.join(path, annot)
@@ -19,23 +20,24 @@ class Data_extractor:
             ymax_data = soup.find_all('ymax')
             labels = soup.find_all('name')
             
-            box_data = np.array([self.labels(labels),
-                                 [self.box(xmin_data), 
-                                 self.box(ymin_data),
-                                 self.box(xmax_data),
-                                 self.box(ymax_data)]], dtype=np.ndarray)
-            box_data[1] = np.array(box_data[1]).T
-            data.append(box_data)
-        return data
+            labels_output = self.labels_(labels)
+            box_data = np.array([self.box_(xmin_data), 
+                                 self.box_(ymin_data),
+                                 self.box_(xmax_data),
+                                 self.box_(ymax_data)]).T
+            data = [labels_output, box_data]
+            output.append(data)
+        
+        return output
 
-    def box(self, boxes):
+    def box_(self, boxes):
         coordinates = []
         for data in boxes:
             val = int(data.text)
             coordinates.append(val)
         return coordinates
     
-    def labels(self, labels):
+    def labels_(self, labels):
         labels_arr = []
         for label in labels:
             labels_arr.append(label.text)
@@ -47,4 +49,3 @@ if __name__ == '__main__':
     output = extractor.data_extraction(annot_path)
     with open('data_for_detection.pkl', 'wb') as d:
         pickle.dump(output, d)
-    
