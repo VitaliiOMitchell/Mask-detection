@@ -26,7 +26,6 @@ class Data_extractor:
                                  self.box(ymax_data)]], dtype=np.ndarray)
             box_data[1] = np.array(box_data[1]).T
             data.append(box_data)
-            
         return data
 
     def box(self, boxes):
@@ -41,7 +40,6 @@ class Data_extractor:
         for label in labels:
             labels_arr.append(label.text)
         return tuple(labels_arr)
-
 
 if __name__ == '__main__':
     annot_path = 'F:/Python/Projects/Mask-detection/annot_masks'
