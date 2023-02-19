@@ -2,10 +2,10 @@ import cv2 as cv
 import numpy as np
 import os
 import pickle
-import torch
-import torchvision
-from torchvision.datasets import ImageFolder
-from torchvision.utils import draw_bounding_boxes, draw_segmentation_masks
+#import torch
+#import torchvision
+#from torchvision.datasets import ImageFolder
+#from torchvision.utils import draw_bounding_boxes, draw_segmentation_masks
 import matplotlib.pyplot as plt
 
 class Image_prep:
@@ -23,9 +23,9 @@ class Image_prep:
                 y = label
                 if y == 'with_mask':
                     cv.rectangle(img, (x[0], x[1]), (x[2], x[3]), (0, 255, 0), thickness=1)
-                if y == 'without_mask':
+                elif y == 'without_mask':
                     cv.rectangle(img, (x[0], x[1]), (x[2], x[3]), (255, 0, 0), thickness=1)
-                if y == 'mask_weared_incorrect':
+                elif y == 'mask_weared_incorrect':
                     cv.rectangle(img, (x[0], x[1]), (x[2], x[3]), (255, 255, 0), thickness=1)
             preprocessed_data.append(img)
             #preprocessed_data.append(data[0])
@@ -39,6 +39,7 @@ if __name__ == '__main__':
         data = pickle.load(d)
     ip = Image_prep()
     output = ip.draw_boxes(path, data)
-    print(output[0].shape)
+    plt.imshow(output[0])
+    plt.show()
     
     

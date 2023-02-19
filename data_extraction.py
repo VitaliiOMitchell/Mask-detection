@@ -7,6 +7,7 @@ import torch
 class Data_extractor:
     def data_extraction(self, data_path):
         output = []
+        labels_for_torch = []
         path = data_path
         for annot in os.listdir(path):
             file = os.path.join(path, annot)
@@ -25,10 +26,11 @@ class Data_extractor:
                                  self.box_(ymin_data),
                                  self.box_(xmax_data),
                                  self.box_(ymax_data)]).T
+            labels_for_torch.append(labels_output)
             data = [labels_output, box_data]
             output.append(data)
         
-        return output[2][1]
+        return output, labels_for_torch
 
     def box_(self, boxes):
         coordinates = []
@@ -46,7 +48,8 @@ class Data_extractor:
 if __name__ == '__main__':
     annot_path = 'F:/Python/Projects/Mask-detection/annot_masks'
     extractor = Data_extractor()
-    output = extractor.data_extraction(annot_path)
+    output, labels_for_torch = extractor.data_extraction(annot_path)
     #with open('data_for_detection.pkl', 'wb') as d:
         #pickle.dump(output, d)
-    print(output)
+    #with open('labels_for_torch.pkl', 'wb') as l:
+        #pickle.dump(labels_for_torch, l)
