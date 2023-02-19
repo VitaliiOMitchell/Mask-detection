@@ -82,3 +82,4 @@ if __name__ == '__main__':
     #with open('data_for_detection.pkl', 'wb') as d:
         #pickle.dump(output, d)
     #df.to_csv('df_for_torch.csv')
+    print(df)
