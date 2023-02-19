@@ -28,7 +28,7 @@ class Data_extractor:
             data = [labels_output, box_data]
             output.append(data)
         
-        return output
+        return output[2][1]
 
     def box_(self, boxes):
         coordinates = []
@@ -47,5 +47,6 @@ if __name__ == '__main__':
     annot_path = 'F:/Python/Projects/Mask-detection/annot_masks'
     extractor = Data_extractor()
     output = extractor.data_extraction(annot_path)
-    with open('data_for_detection.pkl', 'wb') as d:
-        pickle.dump(output, d)
+    #with open('data_for_detection.pkl', 'wb') as d:
+        #pickle.dump(output, d)
+    print(output)
