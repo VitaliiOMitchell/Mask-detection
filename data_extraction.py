@@ -4,6 +4,7 @@ import pickle
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
 
 class Data_extractor:
     def __init__(self, data_im, data_annot):
@@ -55,8 +56,13 @@ class Data_extractor:
         df.rename({0:'xmin', 1:'ymin', 2:'xmax', 3:'ymax'}, axis=1, inplace=True)
         LE = LabelEncoder()
         df['labels'] = LE.fit_transform(df['labels'])
+        train_size = int(0.8 * len(df)) 
+        val_size = len(df) - train_size
+        df_train = df.iloc[0:train_size, :]
+        df_val = df.iloc[train_size:val_size + len(df), :]
+        df_val.index = range(0, len(df_val))
         
-        return df 
+        return df_train, df_val
 
     
     def box_(self, boxes):
@@ -78,8 +84,12 @@ if __name__ == '__main__':
     annot_path = 'F:/Python/Projects/Mask-detection/annot_masks'
     extractor = Data_extractor('F:/Python/Projects/Mask-detection/images_masks', 'F:/Python/Projects/Mask-detection/annot_masks')
     output = extractor.data_extraction()
-    df = extractor.dataframe()
+    train, val = extractor.dataframe()
     #with open('data_for_detection.pkl', 'wb') as d:
         #pickle.dump(output, d)
-    #df.to_csv('df_for_torch.csv')
-    print(df)
+    #train.to_csv('df_for_train.csv', index=False)
+    #val.to_csv('df_for_val.csv', index=False)
+
+    
+
+    

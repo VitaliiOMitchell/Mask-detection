@@ -11,7 +11,7 @@ class Image_prep:
         for image, data in zip(os.listdir(path), boxes_and_labels):
             img = cv.imread(os.path.join(img_path, image))
             img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
-            img = cv.GaussianBlur(img, (3,3), cv.BORDER_DEFAULT)
+            #img = cv.GaussianBlur(img, (3,3), cv.BORDER_DEFAULT)
             labels = list(data[0])
             boxes = data[1]
             for label, arr in zip(labels, boxes):
@@ -32,7 +32,8 @@ if __name__ == '__main__':
     path = 'F:/Python/Projects/Mask-detection/images_masks'
     with open('data_for_detection.pkl', 'rb') as d:
         data = pickle.load(d)
-    ip = Image_prep()
-    output = ip.draw_boxes(path, data)
-    plt.imshow(output[0])
-    plt.show()
+    #ip = Image_prep()
+    #output = ip.draw_boxes(path, data)
+    #plt.imshow(output[0])
+    #plt.show()
+    print(data)
