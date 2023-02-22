@@ -17,11 +17,14 @@ class Boxes_draving:
                 x = arr
                 y = label
                 if y == 'with_mask':
-                    cv.rectangle(img, (x[0], x[1]), (x[2], x[3]), (70, 255, 100), thickness=2)
+                    cv.rectangle(img, (x[0], x[1]), (x[2], x[3]), (70, 255, 100), thickness=1)
+                    cv.putText(img, 'Mask', (x[0]-10, x[1]-10), cv.FONT_HERSHEY_COMPLEX_SMALL, 0.7, (70, 255, 100), 1)
                 elif y == 'without_mask':
-                    cv.rectangle(img, (x[0], x[1]), (x[2], x[3]), (255, 0, 0), thickness=2)
+                    cv.rectangle(img, (x[0], x[1]), (x[2], x[3]), (255, 0, 0), thickness=1)
+                    cv.putText(img, 'No Mask', (x[0]-10, x[1]-10), cv.FONT_HERSHEY_COMPLEX_SMALL, 0.7, (255, 0, 0), 1)
                 elif y == 'mask_weared_incorrect':
-                    cv.rectangle(img, (x[0], x[1]), (x[2], x[3]), (255, 255, 0), thickness=2)
+                    cv.rectangle(img, (x[0], x[1]), (x[2], x[3]), (255, 255, 0), thickness=1)
+                    cv.putText(img, 'Incorrect Mask', (x[0]-10, x[1]-10), cv.FONT_HERSHEY_COMPLEX_SMALL, 0.7, (255, 255, 0), 1)
             preprocessed_data.append(img)
         data_with_boxes = np.array(preprocessed_data, dtype='object')
         
@@ -31,7 +34,7 @@ if __name__ == '__main__':
     path = 'F:/Python/Projects/Mask-detection/images_masks'
     with open('data_for_detection.pkl', 'rb') as d:
         data = pickle.load(d)
-    #IP = Image_prep()
-    #output = ip.draw_boxes(path, data)
-    #plt.imshow(output[353])
-    #plt.show()
+    IP = Boxes_draving()
+    output = IP.draw_boxes(path, data)
+    plt.imshow(output[425])
+    plt.show()
