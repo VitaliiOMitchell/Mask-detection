@@ -87,4 +87,3 @@ if __name__ == '__main__':
         #pickle.dump(output, d)
     #train.to_csv('df_for_train.csv', index=False)
     #val.to_csv('df_for_val.csv', index=False)    
-    print(output)
