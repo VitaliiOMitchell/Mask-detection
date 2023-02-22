@@ -16,15 +16,15 @@ def test(state_dict_path, image):
     img = cv.imread(image)
     img = trans(img)
     img = torch.unsqueeze(img, 0)
-    with torch.no_grad():
-        y = model(img)
-        output = torch.argmax(y, dim=1)
-        if output == 0:
-            return 'Mask is weared inccorectly'
-        elif output == 1:
-            return 'With mask'
-        elif output == 2:
-            return 'Without mask'
+    model.eval()
+    y = model(img)
+    output = torch.argmax(y, dim=1)
+    if output == 0:
+        return 'Mask is weared inccorectly'
+    elif output == 1:
+        return 'With mask'
+    elif output == 2:
+        return 'Without mask'
         
 if __name__ == '__main__':
-    print((test('F:/Python/Projects/Mask-detection/mask_detector.pth', 'F:/Python/Projects/Random stuff/incorrect_masks111.jpg')))
+    print(test('F:/Python/Projects/Mask-detection/mask_detector.pth', 'F:/Python/Projects/Random stuff/index22.jpg'))
