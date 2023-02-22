@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 
 class Data_extractor:
     def __init__(self, data_im, data_annot):
@@ -42,10 +43,10 @@ class Data_extractor:
         box_vals = []
         labels_vals = []
         imgs = []
-        images = os.listdir(self.ims)
+        images_list = os.listdir(self.ims)
         data = np.array(self.data_extraction(), dtype='object')
         labels, boxes = data[:, 0], data[:, 1] 
-        for image, label, box in zip(images, labels, boxes):
+        for image, label, box in zip(images_list, labels, boxes):
             for label_val, box_val in zip(label, box):
                 labels_vals.append(label_val)
                 box_vals.append(box_val)
@@ -64,14 +65,13 @@ class Data_extractor:
         
         return df_train, df_val
 
-    
+    # Helper functions
     def box_(self, boxes):
         coordinates = []
         for data in boxes:
             val = int(data.text)
             coordinates.append(val)
         return coordinates
-    
     
     def labels_(self, labels):
         labels_arr = []
@@ -88,8 +88,4 @@ if __name__ == '__main__':
     #with open('data_for_detection.pkl', 'wb') as d:
         #pickle.dump(output, d)
     #train.to_csv('df_for_train.csv', index=False)
-    #val.to_csv('df_for_val.csv', index=False)
-
-    
-
-    
+    #val.to_csv('df_for_val.csv', index=False)    
