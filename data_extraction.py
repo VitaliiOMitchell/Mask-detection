@@ -4,7 +4,6 @@ import pickle
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
 class Data_extractor:
@@ -51,10 +50,9 @@ class Data_extractor:
                 labels_vals.append(label_val)
                 box_vals.append(box_val)
                 imgs.append(image)
-        df = pd.DataFrame(data=box_vals)
+        df = pd.DataFrame(data=box_vals, columns=['xmin', 'ymin', 'xmax', 'max'])
         df['image'] = imgs
         df['labels'] = labels_vals
-        df.rename({0:'xmin', 1:'ymin', 2:'xmax', 3:'ymax'}, axis=1, inplace=True)
         LE = LabelEncoder()
         df['labels'] = LE.fit_transform(df['labels'])
         train_size = int(0.8 * len(df)) 
@@ -62,7 +60,7 @@ class Data_extractor:
         df_train = df.iloc[0:train_size, :]
         df_val = df.iloc[train_size:val_size + len(df), :]
         df_val.index = range(0, len(df_val))
-        
+         
         return df_train, df_val
 
     # Helper functions
@@ -89,3 +87,4 @@ if __name__ == '__main__':
         #pickle.dump(output, d)
     #train.to_csv('df_for_train.csv', index=False)
     #val.to_csv('df_for_val.csv', index=False)    
+    print(output)
