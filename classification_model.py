@@ -116,7 +116,7 @@ def train_val(model, epochs, train_data, val_data, opt, loss_func, device):
                 val_loss = loss_func(val_output, y_val)
             val_losses.append(val_loss.item())
             if val_loss.item() <= 0.20:
-                torch.save(model.state_dict(), 'F:/Python/Projects/Mask-detection/mask_detector2.pth')
+                torch.save(model.state_dict(), 'F:/Python/Projects/Mask-detection/mask_detector.pth')
         
         train_acc = (train_correct / len(train_dataset)).cpu()
         acc_train.append(train_acc)

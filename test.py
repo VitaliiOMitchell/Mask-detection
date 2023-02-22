@@ -2,7 +2,6 @@ import cv2 as cv
 import torch
 from torchvision import transforms
 import torchvision.transforms as TF
-import numpy as np
 from classification_model import Mask_CNN
 import matplotlib.pyplot as plt
     
@@ -28,4 +27,4 @@ def test(state_dict_path, image):
             return 'Without mask'
         
 if __name__ == '__main__':
-    print((test('F:/Python/Projects/Mask-detection/mask_detector.pth', 'F:/Python/Projects/Random stuff/wearing_masks_on_a_train.jpg')))
+    print((test('F:/Python/Projects/Mask-detection/mask_detector.pth', 'F:/Python/Projects/Random stuff/incorrect_masks111.jpg')))
