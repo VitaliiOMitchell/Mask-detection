@@ -34,5 +34,5 @@ if __name__ == '__main__':
         data = pickle.load(d)
     IP = Boxes_drawing()
     output = IP.draw_boxes(path, data)
-    #plt.imshow(output[0])
-    #plt.show()
+    plt.imshow(output[0])
+    plt.show()

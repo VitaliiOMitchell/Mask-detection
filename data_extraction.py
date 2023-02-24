@@ -83,7 +83,7 @@ if __name__ == '__main__':
     extractor = Data_extractor('F:/Python/Projects/Mask-detection/images_masks', 'F:/Python/Projects/Mask-detection/annot_masks')
     output = extractor.data_extraction()
     train, val = extractor.dataframe()
-    #with open('data_for_detection.pkl', 'wb') as d:
-        #pickle.dump(output, d)
-    #train.to_csv('df_for_train.csv', index=False)
-    #val.to_csv('df_for_val.csv', index=False)    
+    with open('data_for_boxes.pkl', 'wb') as d:
+        pickle.dump(output, d)
+    train.to_csv('df_for_train.csv', index=False)
+    val.to_csv('df_for_val.csv', index=False)    
