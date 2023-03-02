@@ -10,6 +10,7 @@ import torch.optim as optim
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 class My_Dataset(Dataset):
     def __init__(self, path, data, transform=None):
@@ -88,10 +89,12 @@ def train_val(model, epochs, train_data, val_data, opt, loss_func, device):
     acc_val = []
     epochs_range = np.arange(epochs)
     for epoch in range(epochs):
+        train_loss_epoch = 0
+        val_loss_epoch = 0
         train_correct = 0
         val_correct = 0
         model.train()
-        for i, (x_train, y_train) in enumerate(train_data):
+        for i, (x_train, y_train) in enumerate(tqdm(train_data)):
             x_train = x_train.to(device)
             y_train = y_train.to(device)
             
@@ -100,13 +103,15 @@ def train_val(model, epochs, train_data, val_data, opt, loss_func, device):
             preds_train = torch.argmax(train_output, dim=1)
             train_correct += torch.sum(preds_train==y_train)
             train_loss = loss_func(train_output, y_train)
+            train_loss_epoch += train_loss.item() 
             train_loss.backward()
             opt.step()
-        train_losses.append(train_loss.item())
+        train_loss_epoch /= 10
+        train_losses.append(train_loss_epoch)
         
         with torch.no_grad():
             model.eval()
-            for i, (x_val,y_val) in enumerate(val_data):
+            for i, (x_val,y_val) in enumerate(tqdm(val_data)):
                 x_val = x_val.to(device)
                 y_val = y_val.to(device)
 
@@ -114,8 +119,10 @@ def train_val(model, epochs, train_data, val_data, opt, loss_func, device):
                 val_preds = torch.argmax(val_output, dim=1)
                 val_correct += torch.sum(val_preds==y_val)
                 val_loss = loss_func(val_output, y_val)
-            val_losses.append(val_loss.item())
-            if val_loss.item() <= 0.15:
+                val_loss_epoch += val_loss.item()
+            val_loss_epoch /= 10
+            val_losses.append(val_loss_epoch)
+            if val_loss_epoch <= 0.05:
                 torch.save(model.state_dict(), 'F:/Python/Projects/Mask-detection/mask_detector.pth')
         
         train_acc = (train_correct / len(train_dataset)).cpu()
@@ -124,8 +131,14 @@ def train_val(model, epochs, train_data, val_data, opt, loss_func, device):
         acc_val.append(val_acc)
         av_train = np.mean(train_losses)
         av_val = np.mean(val_losses)
-        print(f'Epoch: {epoch}\n Train loss: {train_loss}, Average Train loss: {av_train}, Train accuracy: {train_acc}')
-        print(f'Validation loss: {val_loss}, Average Validation loss: {av_val}, Validation accuracy: {val_acc}')
+
+        print(f'Epoch: {epoch}')
+        tqdm().set_postfix(Train_loss=train_loss_epoch)
+        tqdm().set_postfix(Average_train_loss=av_train)
+        tqdm().set_postfix(Train_accuracy=train_acc)
+        tqdm().set_postfix(Validation_loss=val_loss_epoch)
+        tqdm().set_postfix(Average_validation_loss=av_val)
+        tqdm().set_postfix(Validation_accuracy=val_acc)
     
         best_train_loss_index = train_losses.index(min(train_losses))
         best_val_loss_index = val_losses.index(min(val_losses))
@@ -166,8 +179,8 @@ if __name__ == '__main__':
 
     #Data
     train_dataset, val_dataset = make_datasets('F:/Python/Projects/Mask-detection/images_masks', 'df_for_train.csv', 'df_for_val.csv')
-    train_data = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    val_data = DataLoader(val_dataset, batch_size=batch_size, shuffle=True)
+    train_data = DataLoader(train_dataset, batch_size=batch_size, num_workers=3)
+    val_data = DataLoader(val_dataset, batch_size=batch_size, num_workers=3) 
 
     #Train-validate
     torch.backends.cudnn.benchmark = True

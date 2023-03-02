@@ -27,4 +27,4 @@ def test(state_dict_path, image):
         return 'Without mask'
         
 if __name__ == '__main__':
-    print(test('F:/Python/Projects/Mask-detection/mask_detector.pth', 'F:/Python/Projects/Random stuff/index22.jpg'))
+    print(test('F:/Python/Projects/Mask-detection/mask_detector.pth', 'F:/Python/Projects/Random stuff/incorrect_masks111.jpg'))
